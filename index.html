@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Total para Emprendedores</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <h1><i class="fas fa-lightbulb"></i> Control Total para Emprendedores</h1>
+            <div class="theme-switch">
+                <button id="themeToggle"><i class="fas fa-moon"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tabs">
+        <div class="container">
+            <button class="tab-btn active" data-tab="idea"><i class="fas fa-lightbulb"></i> Idea</button>
+            <button class="tab-btn" data-tab="planning"><i class="fas fa-project-diagram"></i> Planificación</button>
+            <button class="tab-btn" data-tab="execution"><i class="fas fa-tasks"></i> Ejecución</button>
+            <button class="tab-btn" data-tab="tracking"><i class="fas fa-chart-line"></i> Seguimiento</button>
+            <button class="tab-btn" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Sección Idea -->
+        <section id="idea" class="tab-content active">
+            <h2>Desarrolla tu Idea de Negocio</h2>
+            <form id="ideaForm">
+                <div class="form-group">
+                    <label for="businessName">Nombre del Negocio</label>
+                    <input type="text" id="businessName" required>
+                </div>
+                <div class="form-group">
+                    <label for="businessType">Tipo de Negocio</label>
+                    <select id="businessType" required>
+                        <option value="">Selecciona...</option>
+                        <option value="ecommerce">E-commerce</option>
+                        <option value="local">Servicio Local</option>
+                        <option value="saas">Software como Servicio (SaaS)</option>
+                        <option value="manufacturing">Manufactura</option>
+                        <option value="consulting">Consultoría</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="businessDescription">Descripción de tu Negocio</label>
+                    <textarea id="businessDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="businessGoals">Objetivos Principales</label>
+                    <textarea id="businessGoals" rows="3" placeholder="Ej: Alcanzar 100 clientes en 6 meses..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Guardar Idea</button>
+            </form>
+            <div class="ai-assistant">
+                <button id="ideaAssistant" class="btn-ai"><i class="fas fa-robot"></i> Asistencia IA para tu Idea</button>
+                <div id="ideaFeedback" class="ai-feedback hidden"></div>
+            </div>
+        </section>
+
+        <!-- Sección Planificación -->
+        <section id="planning" class="tab-content">
+            <h2>Planificación de tu Negocio</h2>
+            <div class="planning-grid">
+                <div class="task-generator">
+                    <h3><i class="fas fa-magic"></i> Generador de Tareas</h3>
+                    <button id="generateTasks" class="btn-secondary">Generar Tareas Recomendadas</button>
+                    <div id="taskTemplates" class="hidden">
+                        <!-- Se llena dinámicamente con JS -->
+                    </div>
+                </div>
+                <div class="task-list">
+                    <h3><i class="fas fa-tasks"></i> Lista de Tareas</h3>
+                    <form id="addTaskForm">
+                        <div class="form-group">
+                            <input type="text" id="taskDescription" placeholder="Nueva tarea..." required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskPriority">Prioridad</label>
+                                <select id="taskPriority">
+                                    <option value="high">Alta</option>
+                                    <option value="medium" selected>Media</option>
+                                    <option value="low">Baja</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDueDate">Fecha Límite</label>
+                                <input type="date" id="taskDueDate">
+                            </div>
+                            <button type="submit" class="btn-primary">Agregar</button>
+                        </div>
+                    </form>
+                    <ul id="taskList" class="task-items">
+                        <!-- Se llena dinámicamente con JS -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Ejecución -->
+        <section id="execution" class="tab-content">
+            <h2>Ejecución de tu Plan</h2>
+            <div class="execution-container">
+                <div class="task-board">
+                    <div class="board-column">
+                        <h3>Pendiente</h3>
+                        <ul id="pendingTasks" class="task-column" data-status="pending">
+                            <!-- Tareas pendientes -->
+                        </ul>
+                    </div>
+                    <div class="board-column">
+                        <h3>En Progreso</h3>
+                        <ul id="inProgressTasks" class="task-column" data-status="in-progress">
+                            <!-- Tareas en progreso -->
+                        </ul>
+                    </div>
+                    <div class="board-column">
+                        <h3>Completado</h3>
+                        <ul id="completedTasks" class="task-column" data-status="completed">
+                            <!-- Tareas completadas -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="task-details hidden" id="taskDetails">
+                    <h3>Detalles de Tarea</h3>
+                    <div id="detailContent"></div>
+                    <button id="closeDetails" class="btn-secondary">Cerrar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Seguimiento -->
+        <section id="tracking" class="tab-content">
+            <h2>Seguimiento de Progreso</h2>
+            <div class="tracking-grid">
+                <div class="gantt-chart">
+                    <h3><i class="fas fa-chart-gantt"></i> Cronograma</h3>
+                    <canvas id="ganttChart"></canvas>
+                </div>
+                <div class="kpi-panel">
+                    <h3><i class="fas fa-tachometer-alt"></i> Indicadores Clave</h3>
+                    <div class="kpi-cards">
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="completionRate">0%</div>
+                            <div class="kpi-label">Tareas Completadas</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="daysRemaining">0</div>
+                            <div class="kpi-label">Días Restantes</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="blockers">0</div>
+                            <div class="kpi-label">Bloqueadores</div>
+                        </div>
+                    </div>
+                    <div class="reminders">
+                        <h4><i class="fas fa-bell"></i> Recordatorios</h4>
+                        <ul id="reminderList">
+                            <!-- Recordatorios -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Dashboard -->
+        <section id="dashboard" class="tab-content">
+            <h2>Dashboard Resumen</h2>
+            <div class="dashboard-grid">
+                <div class="summary-card">
+                    <h3><i class="fas fa-info-circle"></i> Resumen del Proyecto</h3>
+                    <div id="projectSummary">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <h3><i class="fas fa-chart-pie"></i> Progreso General</h3>
+                    <canvas id="progressChart"></canvas>
+                </div>
+                <div class="export-card">
+                    <h3><i class="fas fa-file-export"></i> Exportar/Importar</h3>
+                    <button id="exportProject" class="btn-primary"><i class="fas fa-download"></i> Exportar Proyecto</button>
+                    <button id="importProject" class="btn-secondary"><i class="fas fa-upload"></i> Importar Proyecto</button>
+                    <input type="file" id="importFile" class="hidden" accept=".json">
+                </div>
+                <div class="ai-assistant-card">
+                    <h3><i class="fas fa-robot"></i> Asistente Inteligente</h3>
+                    <button id="analyzeProject" class="btn-ai"><i class="fas fa-chart-line"></i> Analizar Progreso</button>
+                    <div id="aiAnalysis" class="ai-feedback hidden"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Control Total para Emprendedores &copy; 2023</p>
+        </div>
+    </footer>
+
+    <script src="js/storage.js" type="module"></script>
+    <script src="js/tasks.js" type="module"></script>
+    <script src="js/gantt.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
